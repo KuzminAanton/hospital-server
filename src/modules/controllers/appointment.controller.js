@@ -45,7 +45,7 @@ module.exports.editAppointments = async (req, res) => {
     patientName, doctorName, date, complaints,
   } = req.body;
   const { _id } = req.query;
-  if (_id && patientName && doctorName && date && complaints) {
+  if (_id || patientName || doctorName || date || complaints) {
     Appointment.updateOne({ _id }, req.body).then(() => {
       Appointment.find().then((result) => {
         res.send({
