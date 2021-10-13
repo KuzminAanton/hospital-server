@@ -10,7 +10,7 @@ module.exports.newUser = async (req, res) => {
     const isUsed = await Users.findOne({ login });
 
     if (isUsed) {
-      return res.status(300).json({ message: 'данный логин уже занят' });
+      return res.status(300).json({ message: 'Login is already' });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
