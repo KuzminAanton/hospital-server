@@ -9,7 +9,7 @@ module.exports.newUser = async (req, res) => {
   if (login && password) {
     const isUsed = await Users.findOne({ login });
     if (isUsed) {
-      return res.status(300).json({ message: 'данный эмайл уже занят' });
+      return res.status(300).json({ message: 'Login is already' });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new Users({
