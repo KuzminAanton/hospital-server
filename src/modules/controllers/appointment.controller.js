@@ -4,18 +4,19 @@ const Users = require('../../db/models/users/index');
 const Appointment = require('../../db/models/appointment/index');
 const Doctors = require('../../db/models/doctors/index');
 
-module.exports.addAppointments = async (req, res) => {
+module.exports.addAppointments = (req, res) => {
   const {
     patientName, doctorName, date, complaints,
   } = req.body;
-  if (req.body) {
+  if (patientName && doctorName && date && complaints) {
     const appointmentNew = new Appointment({
       patientName,
       doctorName,
       date,
       complaints,
+      userId: req.user.userId,
     });
-    await appointmentNew.save().then(() => {
+    appointmentNew.save().then(() => {
       Appointment.find().then((result) => {
         res.send({
           data: result,
@@ -27,7 +28,7 @@ module.exports.addAppointments = async (req, res) => {
   }
 };
 
-module.exports.getDoctors = async (req, res) => {
+module.exports.getDoctors = (req, res) => {
   Doctors.find().then((result) => {
     res.send({
       data: result,
@@ -35,7 +36,7 @@ module.exports.getDoctors = async (req, res) => {
   });
 };
 
-module.exports.getAppointments = async (req, res) => {
+module.exports.getAppointments = (req, res) => {
   Appointment.find().then((result) => {
     res.send({
       data: result,
