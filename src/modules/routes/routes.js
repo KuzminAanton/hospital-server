@@ -12,6 +12,7 @@ const {
   addAppointments,
   getDoctors,
   editAppointments,
+  deleteAppointments,
 } = require('../controllers/appointment.controller');
 
 router.post('/auth/newUser', newUser);
@@ -20,5 +21,6 @@ router.get('/getDoctors', auth, getDoctors);
 router.post('/addAppointments', auth, addAppointments);
 router.get('/getAppointments', auth, getAppointments);
 router.patch('/editAppointments', auth, editAppointments);
+router.delete('/deleteAppointments', auth, deleteAppointments);
 
 module.exports = router;

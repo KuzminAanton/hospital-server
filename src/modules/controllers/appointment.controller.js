@@ -65,3 +65,19 @@ module.exports.editAppointments = (req, res) => {
     res.status(422).send('Value is not correct');
   }
 };
+
+module.exports.deleteAppointments = (req, res) => {
+  const { userId } = req.user;
+  const { _id } = req.query;
+  if (_id) {
+    Appointment.deleteOne({ _id }).then(() => {
+      Appointment.find({ userId }).then((result) => {
+        res.send({
+          data: result,
+        });
+      });
+    });
+  } else {
+    res.status(422).send('Value is not correct');
+  }
+};
