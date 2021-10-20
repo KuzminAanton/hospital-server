@@ -1,6 +1,3 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const Users = require('../../db/models/users/index');
 const Appointment = require('../../db/models/appointment/index');
 const Doctors = require('../../db/models/doctors/index');
 
@@ -43,6 +40,25 @@ module.exports.getAppointments = (req, res) => {
     Appointment.find({ userId }).then((result) => {
       res.send({
         data: result,
+      });
+    });
+  } else {
+    res.status(422).send('Value is not correct');
+  }
+};
+
+module.exports.editAppointments = (req, res) => {
+  const { userId } = req.user;
+  const { _id } = req.query;
+  const {
+    patientName, doctorName, date, complaints,
+  } = req.body;
+  if (_id && (patientName || doctorName || date || complaints)) {
+    Appointment.updateOne({ _id }, req.body).then(() => {
+      Appointment.find({ userId }).then((result) => {
+        res.send({
+          data: result,
+        });
       });
     });
   } else {

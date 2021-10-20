@@ -11,12 +11,14 @@ const {
   getAppointments,
   addAppointments,
   getDoctors,
+  editAppointments,
 } = require('../controllers/appointment.controller');
 
 router.post('/auth/newUser', newUser);
 router.post('/auth/login', login);
-router.get('/getAppointments', auth, getAppointments);
-router.post('/addAppointments', auth, addAppointments);
 router.get('/getDoctors', auth, getDoctors);
+router.post('/addAppointments', auth, addAppointments);
+router.get('/getAppointments', auth, getAppointments);
+router.patch('/editAppointments', auth, editAppointments);
 
 module.exports = router;
