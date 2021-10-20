@@ -7,7 +7,7 @@ module.exports = (req, res, next) => {
   }
 
   try {
-    const token = req.headers.authorization.split(' ')[0];
+    const token = req.headers.authorization;
     if (!token) {
       res.status(401).send({
         error: 'token not funded',
