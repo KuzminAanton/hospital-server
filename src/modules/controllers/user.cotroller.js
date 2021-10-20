@@ -1,3 +1,5 @@
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const Users = require('../../db/models/users/index');
 
 const jwtSecret = 'xkslfm29irj3rtf2m3fdio';
