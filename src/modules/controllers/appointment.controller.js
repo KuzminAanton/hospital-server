@@ -8,10 +8,15 @@ module.exports.addAppointments = async (req, res) => {
 
 };
 
-module.exports.getAppointments = async (req, res) => {
-  Appointment.find().then((result) => {
-    res.send({
-      data: result,
+module.exports.getAppointments = (req, res) => {
+  const { userId } = req.user;
+  if (userId) {
+    Appointment.find({ userId }).then((result) => {
+      res.send({
+        data: result,
+      });
     });
-  });
+  } else {
+    res.status(422).send('Value is not correct');
+  }
 };
