@@ -7,6 +7,7 @@ const listScheme = new Schema({
   doctorName: { type: String, required: true },
   date: { type: String, required: true },
   complaints: { type: String, required: true },
+  userId: { type: String, required: true },
 });
 
 module.exports = Appointment = mongoose.model('appointment', listScheme);

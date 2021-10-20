@@ -1,19 +1,21 @@
 const Appointment = require('../../db/models/appointment/index');
 const Doctors = require('../../db/models/doctors/index');
 
-module.exports.addAppointments = async (req, res) => {
+module.exports.addAppointments = (req, res) => {
+  const { userId } = req.user;
   const {
     patientName, doctorName, date, complaints,
   } = req.body;
-  if (req.body) {
+  if (patientName && doctorName && date && complaints) {
     const appointmentNew = new Appointment({
       patientName,
       doctorName,
       date,
       complaints,
+      userId,
     });
-    await appointmentNew.save().then(() => {
-      Appointment.find().then((result) => {
+    appointmentNew.save().then(() => {
+      Appointment.find({ userId }).then((result) => {
         res.send({
           data: result,
         });
@@ -24,7 +26,7 @@ module.exports.addAppointments = async (req, res) => {
   }
 };
 
-module.exports.getDoctors = async (req, res) => {
+module.exports.getDoctors = (req, res) => {
   Doctors.find().then((result) => {
     res.send({
       data: result,
@@ -32,25 +34,12 @@ module.exports.getDoctors = async (req, res) => {
   });
 };
 
-module.exports.getAppointments = async (req, res) => {
-  Appointment.find().then((result) => {
-    res.send({
-      data: result,
-    });
-  });
-};
-
-module.exports.editAppointments = async (req, res) => {
-  const {
-    patientName, doctorName, date, complaints,
-  } = req.body;
-  const { _id } = req.query;
-  if (_id && patientName && doctorName && date && complaints) {
-    Appointment.updateOne({ _id }, req.body).then(() => {
-      Appointment.find().then((result) => {
-        res.send({
-          data: result,
-        });
+module.exports.getAppointments = (req, res) => {
+  const { userId } = req.user;
+  if (userId) {
+    Appointment.find({ userId }).then((result) => {
+      res.send({
+        data: result,
       });
     });
   } else {
@@ -58,10 +47,15 @@ module.exports.editAppointments = async (req, res) => {
   }
 };
 
-module.exports.deleteAppointments = async (req, res) => {
-  if (req.query._id) {
-    Appointment.deleteOne({ _id: req.query._id }).then(() => {
-      Appointment.find().then((result) => {
+module.exports.editAppointments = (req, res) => {
+  const { userId } = req.user;
+  const { _id } = req.query;
+  const {
+    patientName, doctorName, date, complaints,
+  } = req.body;
+  if (_id && (patientName || doctorName || date || complaints)) {
+    Appointment.updateOne({ _id }, req.body).then(() => {
+      Appointment.find({ userId }).then((result) => {
         res.send({
           data: result,
         });
